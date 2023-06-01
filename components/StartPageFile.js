@@ -6,39 +6,39 @@ import LinearGradient from 'react-native-linear-gradient';
 import StartImage from './StartImageComponent.js';
 import StartTxt from './StarttxtComponent.js';
 
-export const StartPageComponent = (props) => {
+export const StartPageComponent = props => {
   return (
-    <View>
-      <LinearGradient
-        colors={['#3E7EA7', '#97BFD9']}
-        style={{height: 790}}
-        locations={[0, 1]}>
-        <StartImage />
-        <StartTxt />
+    <View style={styles.backcover}>
+      <StartImage />
+      <StartTxt />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => props.navigation.navigate('LoginPage')}>
-          <Text style={styles.buttonText}>Start To Enjoy the DBANK</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => props.navigation.navigate('LoginPage')}>
+        <LinearGradient
+          colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          locations={[0.2, 1]}
+          style={styles.button}>
+          <Text style={styles.buttonText}>Get Started</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#1F3748',
-    paddingVertical: 25,
-    marginVertical: 25,
-    paddingHorizontal: 10,
-    borderRadius: 50,
-    marginRight: 30,
-    marginLeft: 30,
+    marginTop: 8,
+    paddingVertical: 20,
+    borderRadius: 30,
+    marginRight: 8,
+    marginLeft: 8,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },

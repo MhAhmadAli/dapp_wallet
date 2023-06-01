@@ -8,11 +8,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Alert,
-  Button,
 } from 'react-native';
 
-const LoginField = () => {
+export const LoginField = () => {
   const [firstname, setfirstname] = useState('');
   const [secondname, setsecondname] = useState('');
   const [email, setEmail] = useState('');

@@ -1,10 +1,13 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
+
 const App = () => {
-    return (
-        <Text>Close</Text>
-    );
+  return (
+    <View>
+      <Text>w</Text>
+    </View>
+  );
 };
 
 export default App;

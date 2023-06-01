@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     textBlock2: {
         fontSize: 14,
         color: 'white',
-        paddingLeft: 13,
+        paddingLeft: 11,
     },
 });
 

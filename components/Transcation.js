@@ -1,44 +1,52 @@
 import React from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
-// import {FlatList} from 'react-native-gesture-handler';
+import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
 
 const Transcation = () => {
   function getMessage() {
-    return 'My Transcation';
+    return 'Transcations';
   }
   const History = [
     {
       id: 1,
+      name: 'ShopName',
       Date: '18-May-2023',
-      Amount: '$5500',
+      Amount: '5500',
     },
     {
       id: 2,
+      name: 'ShopName',
       Date: '18-May-2023',
-      Amount: '$5500',
+      Amount: '5500',
     },
     {
       id: 3,
+      name: 'ShopName',
       Date: '18-May-2023',
-      Amount: '$5500',
+      Amount: '5500',
     },
     {
       id: 4,
+      name: 'ShopName',
       Date: '18-May-2023',
-      Amount: '$5500',
+      Amount: '5500',
     },
   ];
   return (
-    <View>
+    <View style={styles.conatiner}>
+      <View style={styles.line}></View>
       <Text style={styles.textcolor1}>{getMessage()}</Text>
+
       <FlatList
         data={History}
         renderItem={({item}) => (
           <View style={styles.historybox}>
             <Text style={styles.textcolor2}>{item.id}</Text>
-            <Text style={styles.textcolor3}>{item.Date}</Text>
-            <Text style={styles.textcolor4}>{item.Amount}</Text>
+            <View>
+              <Text style={styles.textcolor3}>{item.name}</Text>
+              <Text style={styles.textcolor4}>{item.Date}</Text>
+            </View>
+            <Text style={styles.textcolor5}>$ {item.Amount}</Text>
           </View>
         )}
       />
@@ -47,12 +55,20 @@ const Transcation = () => {
 };
 
 const styles = StyleSheet.create({
+  line: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    width: 100,
+    alignSelf: 'center',
+    marginTop: 15,
+  },
+  conatiner: {
+    backgroundColor: '#DEDEDE',
+    margin: 10,
+    borderRadius: 30,
+  },
   historybox: {
-    borderColor: 'black',
-    borderWidth: 5,
-    marginBottom: 10,
     borderRadius: 15,
-    backgroundColor: '#252525',
     padding: 10,
     marginLeft: 20,
     marginRight: 20,
@@ -61,36 +77,42 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     justifyContent: 'space-between',
+    marginBottom: 2,
   },
 
   textcolor1: {
-    color: 'white',
+    marginTop: 25,
+    color: 'black',
     fontSize: 20,
     paddingLeft: 20,
-    marginBottom: 20,
+    marginBottom: 15,
     fontWeight: 'bold',
   },
 
   textcolor2: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
-    
   },
 
   textcolor3: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
   },
 
   textcolor4: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 12,
     textAlign: 'right',
   },
-  
+
+  textcolor5: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default Transcation;

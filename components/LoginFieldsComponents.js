@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import Modal from 'react-native-modal';
+import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
   View,
@@ -7,152 +8,118 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Modal,
   Button,
 } from 'react-native';
 
-export const LoginField = (props) => {
-  
+const LoginField = props => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [passwordemptymodal, setpasswordemptymodal] = useState(false);
-  const [emailemptymodal, setemailemptymodal] = useState(false);
-  const [LoginModal, setLoginModal] = useState(false);
+  const [hideninputemail, sethideninputemail] = useState(false);
+  const [hideninputpass, sethideninputpassword] = useState(false);
   const [invalidModal, setinvalidModal] = useState(false);
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const passwordemptymodalCloseModal = () => {
-    setpasswordemptymodal(false);
-  };
-
-  const emailemptymodalCloseModal = () => {
-    setemailemptymodal(false);
-  };
-
-  const LoginModalCloseModal = () => {
-    // setLoginModal(false);
-    // ()=>props.navigation.navigate('DashboardView')
-  };
 
   const invalidModalCloseModal = () => {
     setinvalidModal(false);
   };
 
+  let registerMargin = 190;
+  if (hideninputemail == true && hideninputpass == true) {
+    registerMargin = 88;
+  } else if (hideninputpass == true) {
+    registerMargin = 152;
+  } else if (hideninputemail == true) {
+    registerMargin = 140;
+  } else {
+    registerMargin = 190;
+  }
+
   const handleLogin = () => {
     if (email.trim() === '' && password.trim() === '') {
-      setShowModal(true);
+      sethideninputemail(true);
+      sethideninputpassword(true);
+    } else if (email === 'example@ex.com' && password === 'pass') {
+      navigation.navigate('DashboardView');
+    } else if (email.trim() === '') {
+      sethideninputemail(true);
+      sethideninputpassword(false);
+    } else if (password.trim() === '') {
+      sethideninputemail(false);
+      sethideninputpassword(true);
     } else {
-      if (email.trim() === '') {
-        setemailemptymodal(true);
-      } else if (password.trim() === '') {
-        setpasswordemptymodal(true);
-      } else if (email == 'example@example.com' && password == 'password') {
-        setLoginModal(true);
-        setTimeout(() => {
-          setLoginModal(false);
-        }, 2000);
-      } else {
-        setinvalidModal(true);
-      }
+      setinvalidModal(true);
     }
   };
 
   return (
     <View>
       <TextInput
-        placeholder="Enter your email"
-        style={styles.passwordfield}
+        placeholder="Enter the Email Address"
+        style={styles.usernamefield}
         onChangeText={text => setEmail(text)}
         value={email}
       />
 
+      {hideninputemail && (
+        <TextInput style={styles.hiddenusernamefield}>
+          <Text>Enter the Valid Email Address??</Text>
+        </TextInput>
+      )}
+
       <TextInput
-        placeholder="Enter your password"
+        placeholder="Enter your Password"
         style={styles.passwordfield}
         secureTextEntry={true}
         onChangeText={text => setPassword(text)}
         value={password}
       />
-      <View style={styles.Twobuttons}>
-        <TouchableOpacity onPress={handleLogin} style={styles.loginbutton}>
-          <Text style={{color: 'white', fontSize: 16}}>Login</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.forgettenbutton}>
-          <Text style={{color: 'white', fontSize: 16}}>Forgetten</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.Registerbutton}>
-        <Text style={{color: 'white', fontSize: 19, textAlign: 'center'}}>
-          Register Now
+      {hideninputpass && (
+        <Text style={styles.hiddenpasswordfield}>
+          Enter Your Valid Password??
         </Text>
-      </TouchableOpacity>
-
-      {/* Email Password Empty Modal */}
-      {showModal && (
-        <Modal animationType="slide" transparent visible={showModal}>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{backgroundColor: 'white', padding: 20}}>
-              <Text>Please enter both email and password</Text>
-              <Button
-                style={styles.buttonView}
-                title="OK"
-                onPress={handleCloseModal}
-              />
-            </View>
-          </View>
-        </Modal>
       )}
 
-      {/* passwordemptymodal */}
+      <View style={styles.Twobuttons}>
+        <LinearGradient
+          colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          locations={[0.2, 1]}
+          style={styles.loginbutton}>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={{color: 'white', fontSize: 17, fontWeight: 'bold'}}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
 
-      {passwordemptymodal && (
-        <Modal animationType="slide" transparent visible={passwordemptymodal}>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{backgroundColor: 'white', padding: 20}}>
-              <Text>Password is Empty!!', 'Kinldy Enter it?</Text>
-              <Button title="OK" onPress={passwordemptymodalCloseModal} />
-            </View>
-          </View>
-        </Modal>
-      )}
+        <LinearGradient
+          colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          locations={[0.2, 1]}
+          style={styles.forgettenbutton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('RegisterScreen')}>
+            <Text style={{color: 'white', fontSize: 17, fontWeight: 'bold'}}>
+              Forgetten
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
 
-      {/* emailemptymodal */}
-
-      {emailemptymodal && (
-        <Modal animationType="slide" transparent visible={emailemptymodal}>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{backgroundColor: 'white', padding: 20}}>
-              <Text>Email Address is Empty!!', 'Kinldy Enter it?</Text>
-              <Button title="OK" onPress={emailemptymodalCloseModal} />
-            </View>
-          </View>
-        </Modal>
-      )}
-
-      {/* LoginModal */}
-
-      {LoginModal && (
-        <Modal animationType="slide" transparent visible={LoginModal} setpropvalue={()=>props.navigation.navigate('DashboardView')
-        }>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <View style={{backgroundColor: 'white', padding: 20}}>
-              <Text>Login Sucessfull!!</Text>
-              <Button
-                title="OK"
-                onPress={LoginModalCloseModal}
-              />
-            </View>
-          </View>
-        </Modal>
-      )}
+      <LinearGradient
+        colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        locations={[0.2, 1]}
+        style={[styles.Registerbutton, {marginTop: registerMargin}]}>
+        <TouchableOpacity>
+          <Text style={styles.Registertxt}>Register Now</Text>
+        </TouchableOpacity>
+      </LinearGradient>
 
       {/* invalidModal */}
 
@@ -181,48 +148,67 @@ export const LoginField = (props) => {
 };
 
 const styles = StyleSheet.create({
-  emailtext: {
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'left',
-    marginTop: 10,
-    marginLeft: 25,
-  },
-
-  passwordtext: {
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'left',
-    marginTop: 10,
-    marginLeft: 25,
-  },
-
   usernamefield: {
-    borderColor: 'white',
-    borderWidth: 3,
     borderRadius: 50,
     paddingLeft: 25,
     fontSize: 17,
-    margin: 10,
+    marginTop: 10,
+    marginLeft: 25,
+    marginRight: 25,
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    width: 330,
+    alignSelf: 'center',
+  },
+
+  hiddenusernamefield: {
+    borderRadius: 50,
+    paddingLeft: 25,
+    fontSize: 18,
+    marginLeft: 25,
+    marginRight: 25,
+    marginBottom: 15,
+    color: 'red',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 
   passwordfield: {
-    borderColor: 'black',
-    borderWidth: 3,
     borderRadius: 50,
     paddingLeft: 25,
     fontSize: 17,
-    margin: 10,
+    marginTop: 10,
+    marginLeft: 25,
+    marginRight: 25,
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    width: 330,
+    alignSelf: 'center',
+    marginBottom: 5,
+  },
+
+  hiddenpasswordfield: {
+    borderRadius: 50,
+    paddingLeft: 25,
+    fontSize: 18,
+    marginLeft: 25,
+    marginRight: 25,
+    marginBottom: 15,
+    color: 'red',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 
   loginbutton: {
-    backgroundColor: '#1F3748',
     paddingLeft: 60,
     paddingRight: 60,
     paddingTop: 17,
     paddingBottom: 17,
-    margin: 7,
+    marginBottom: 7,
+    marginLeft: 7,
+    marginRight: 7,
     borderRadius: 50,
+    marginTop: 20,
   },
 
   forgettenbutton: {
@@ -231,8 +217,11 @@ const styles = StyleSheet.create({
     paddingRight: 50,
     paddingTop: 17,
     paddingBottom: 17,
-    margin: 7,
+    marginBottom: 7,
+    marginLeft: 7,
+    marginRight: 7,
     borderRadius: 50,
+    marginTop: 20,
   },
 
   Twobuttons: {
@@ -241,15 +230,26 @@ const styles = StyleSheet.create({
   },
 
   Registerbutton: {
-    backgroundColor: '#1F3748',
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingTop: 16,
-    paddingBottom: 16,
-    marginTop: 3,
-    marginLeft: 25,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    marginTop: 190,
+    marginLeft: 23,
     marginRight: 23,
     borderRadius: 50,
+  },
+
+  Registertxt: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: ['rgba(167,131,255,1)', 'rgba(81,108,250,1)'],
+    borderRadius: 30,
+    textShadowColor: ['rgba(81,108,250,1)', 'rgba(167,131,255,1)'],
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 6,
   },
 });
 

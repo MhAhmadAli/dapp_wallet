@@ -1,28 +1,57 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, TextInput } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  TextInput,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 const LoginTxt = () => {
-    return (
-        <View>
-            <Text style={styles.LoginText}>
-                Welcome To D-Pay
-            </Text>
-            <Text style={styles.LoginText}>
-                Internet Banking
-            </Text>
-        </View>
-
-    );
+  return (
+    <View>
+      <Text style={styles.LoginText}>FINANCE FUTURE</Text>
+      <Text style={styles.LoginText1}>BANK</Text>
+      <View style={styles.line}></View>
+      <Text style={styles.LoginText2}>WELCOME!!</Text>
+    </View>
+  );
 };
 
-const styles = StyleSheet.create(
-    {
-        LoginText: {
-            fontSize: 25,
-            textAlign: 'center',
-            color: 'white',
-            fontFamily: 'Open Sans',
-        }
-    },
-);
+const styles = StyleSheet.create({
+  LoginText: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: 'black',
+    fontFamily: 'Open Sans',
+    marginTop: 15,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  LoginText1: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontFamily: 'Open Sans',
+    marginBottom: 40,
+    color: 'black',
+    
+  },
+  line: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    width: 100,
+    alignSelf: 'center',
+    marginBottom: 40,
+  },
+  LoginText2: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: 'black',
+    fontFamily: 'Open Sans',
+    marginBottom: 15,
+    fontWeight: 'bold',
+  },
+
+});
 
 export default LoginTxt;
