@@ -36,15 +36,7 @@ export const TranscationDetails = () => {
         <View>
           <TouchableOpacity style={styles.Download}>
             <Text style={{ color: 'blue', fontSize: 17, fontWeight: 'bold' }}>
-              Add
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <TouchableOpacity style={styles.Add}>
-            <Text style={{ color: 'blue', fontSize: 17, fontWeight: 'bold' }}>
-              Transfer
+              Receive
             </Text>
           </TouchableOpacity>
         </View>
@@ -56,7 +48,7 @@ export const TranscationDetails = () => {
 const styles = StyleSheet.create({
   walletdetailscontainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginTop: 25,
     marginRight: 30,
     marginLeft: 30,
