@@ -1,13 +1,9 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
-const myImage = require('G:/react native/DefiApp/pics/imagestart.jpg');
+// const myImage = require('');
 const App = () => {
-  return (
-    <View>
-      <Image source={myImage} style={styles.strtimg} />
-    </View>
-  );
+  return <View>{/* <Image source={myImage} style={styles.strtimg} /> */}</View>;
 };
 const styles = StyleSheet.create({
   strtimg: {

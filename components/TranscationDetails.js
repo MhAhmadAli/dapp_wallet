@@ -1,9 +1,14 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Text, TouchableOpacity, Platform} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
 import { Icon } from '@fortawesome/react-native-fontawesome';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const TranscationDetails = () => {
   const navigation = useNavigation();
@@ -14,13 +19,14 @@ export const TranscationDetails = () => {
         <View>
           <LinearGradient
             colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
             locations={[0.2, 1]}
             style={styles.Transfer}>
-
-            <TouchableOpacity onPress={() => navigation.navigate('TransferScreen')}>
-              <Text style={{color: 'white', fontSize: 17, fontWeight: 'bold'}}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('TransferScreen')}>
+              <Text
+                style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>
                 Transfer
               </Text>
             </TouchableOpacity>
@@ -29,14 +35,15 @@ export const TranscationDetails = () => {
 
         <View>
           <TouchableOpacity style={styles.Download}>
-            <Text style={{color: 'blue', fontSize: 17, fontWeight: 'bold'}}>Add
+            <Text style={{ color: 'blue', fontSize: 17, fontWeight: 'bold' }}>
+              Add
             </Text>
           </TouchableOpacity>
         </View>
 
         <View>
           <TouchableOpacity style={styles.Add}>
-            <Text style={{color: 'blue', fontSize: 17, fontWeight: 'bold'}}>
+            <Text style={{ color: 'blue', fontSize: 17, fontWeight: 'bold' }}>
               Transfer
             </Text>
           </TouchableOpacity>
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
     marginLeft: 30,
   },
-  
+
   mywallet: {
     color: 'black',
     fontSize: 20,
