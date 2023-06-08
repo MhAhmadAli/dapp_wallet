@@ -23,7 +23,7 @@ const Transcation = () => {
           if(transaction.from_address.toLowerCase() === temp_address.toLowerCase()) {
             direction = 'OUT';
           }
-          const amount = transaction.value / 1000000000000000000;
+          const amount = (transaction.value / 1000000000000000000).toFixed(5);
           const date = moment(transaction.block_timestamp).format('DD-MMM-YYYY');
 
           temp_history.push({
