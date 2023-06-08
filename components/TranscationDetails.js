@@ -34,7 +34,9 @@ export const TranscationDetails = () => {
         </View>
 
         <View>
-          <TouchableOpacity style={styles.Download}>
+          <TouchableOpacity style={styles.Download}
+            onPress={() => navigation.navigate('Receive')}
+          >
             <Text style={{ color: 'blue', fontSize: 17, fontWeight: 'bold' }}>
               Receive
             </Text>

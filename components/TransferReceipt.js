@@ -2,11 +2,14 @@ import {findFocusedRoute, useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, RefreshControlComponent} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import shortenString from './shortenString';
 
-export const TransferScreen = ({navigation}) => {
-  const [receivername, setreceivername] = useState('Farooq');
-  const [TranscationId, setTranscationId] = useState('123548911055852');
-  const [Amount, setAmount] = useState('45');
+export const TransferScreen = ({navigation, route}) => {
+  const {hash, from, to, value} = route.params;
+  const [receivername, setreceivername] = useState(to.length > 10 ? shortenString(to) : to);
+  const [TranscationId, setTranscationId] = useState(hash);
+  const [Amount, setAmount] = useState(value);
+
   const handleGoBack = () => {
     navigation.navigate('DashboardView');
   };
@@ -14,7 +17,7 @@ export const TransferScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.complete1}>COMPLETE</Text>
-      <Text style={styles.amountstyle}>$ {Amount}</Text>
+      <Text style={styles.amountstyle}>{Amount} ETH</Text>
       <Text style={styles.paidto}>Paid To</Text>
       <Text style={styles.receivername}>{receivername}</Text>
       <Text style={styles.transcationid}>Transcation ID</Text>

@@ -6,6 +6,7 @@ import LoginField from './components/LoginFieldsComponents.js';
 import { RegisterScreen } from './components/RegisterScreen.js';
 import { TransferScreen } from './components/TransferScreen.js';
 import { TranscationDetails } from './components/TranscationDetails.js';
+import Receive from './components/Receive.js';
 
 import TransferReceipt from './components/TransferReceipt.js';
 import { NavigationContainer } from '@react-navigation/native';
@@ -29,6 +30,7 @@ const App = () => {
           name="TranscationDetails"
           component={TranscationDetails}
         />
+        <stack.Screen name="Receive" component={Receive} />
         <stack.Screen name="TransferScreen" component={TransferScreen} />
         <stack.Screen name="TransferReceipt" component={TransferReceipt} />
       </stack.Navigator>

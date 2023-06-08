@@ -1,52 +1,65 @@
 import React from 'react';
 import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
+import axios from 'axios';
+import shortenString from './shortenString';
+import moment from 'moment';
 
 const Transcation = () => {
+  const [history, setHistory] = React.useState([])
+  React.useEffect(() => {
+    axios.get("https://dapp-eallet-deploy1.vercel.app/api/getAddress").then((res) => {
+      const temp_address = res.data.address;
+
+      axios.post("https://dapp-eallet-deploy1.vercel.app/api/getTransactions", {
+        address: temp_address,
+      }).then((res) => {
+        const temp_history = [];
+        let id = 1;
+        for (const transaction of res.data.result) {
+          const hash = shortenString(transaction.hash, 5, 3);
+          const tmpid = id++;
+          let direction = 'IN';
+          if(transaction.from_address.toLowerCase() === temp_address.toLowerCase()) {
+            direction = 'OUT';
+          }
+          const amount = transaction.value / 1000000000000000000;
+          const date = moment(transaction.block_timestamp).format('DD-MMM-YYYY');
+
+          temp_history.push({
+            id: tmpid,
+            hash: hash,
+            direction: direction,
+            amount: amount,
+            date: date,
+          })
+        }
+        setHistory(temp_history);
+      }).catch((err) => {});
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, [])
   function getMessage() {
     return 'Transcations';
   }
-  const History = [
-    {
-      id: 1,
-      name: 'ShopName',
-      Date: '18-May-2023',
-      Amount: '5500',
-    },
-    {
-      id: 2,
-      name: 'ShopName',
-      Date: '18-May-2023',
-      Amount: '5500',
-    },
-    {
-      id: 3,
-      name: 'ShopName',
-      Date: '18-May-2023',
-      Amount: '5500',
-    },
-    {
-      id: 4,
-      name: 'ShopName',
-      Date: '18-May-2023',
-      Amount: '5500',
-    },
-  ];
+  
   return (
     <View style={styles.conatiner}>
       <View style={styles.line}></View>
       <Text style={styles.textcolor1}>{getMessage()}</Text>
 
       <FlatList
-        data={History}
+        data={history}
         renderItem={({item}) => (
           <View style={styles.historybox}>
             <Text style={styles.textcolor2}>{item.id}</Text>
             <View>
-              <Text style={styles.textcolor3}>{item.name}</Text>
-              <Text style={styles.textcolor4}>{item.Date}</Text>
+              <Text style={styles.textcolor3}>{item.hash}</Text>
+              <Text style={styles.textcolor4}>{item.date}</Text>
             </View>
-            <Text style={styles.textcolor5}>$ {item.Amount}</Text>
+            <Text>{item.direction}</Text>
+            <Text style={styles.textcolor5}>$ {item.amount}</Text>
           </View>
         )}
       />
