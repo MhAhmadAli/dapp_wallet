@@ -1,13 +1,16 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, { useContext } from 'react';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 //files_Components
-import Transcation_Details from './TranscationDetails.js';
 import AccountDetails from './AccountDetails.js';
+import { AppStateContext } from './AppStateContext.js';
 import Transcations from './Transcation.js';
+import Transcation_Details from './TranscationDetails.js';
 
 export const DashboardView = () => {
+  const [context, setContext] = useContext(AppStateContext);
+
   return (
     <View>
       <AccountDetails />

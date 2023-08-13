@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Clipboard } from 'react-native'
 import { Text } from 'react-native-paper';
@@ -10,15 +10,16 @@ import FlexDetail from './FlexDetail.js';
 import shortenString from './shortenString.js';
 import Svg, { Path } from 'react-native-svg';
 import copysvg from './copy.svg';
+import { AppStateContext } from './AppStateContext.js';
 
 const AccountDetails = () => {
   const [balance, setBalance] = useState('0');
   const [address, setAddress] = useState('');
   const [fullAddress, setFullAddress] = useState('');
+  const [context, setContext] = useContext(AppStateContext);
 
   useEffect(() => {
-    axios.get("https://dapp-eallet-deploy1.vercel.app/api/getAddress").then((res) => {
-      const temp_addr = res.data.address;
+      const temp_addr = context.address;
       const short_address = shortenString(temp_addr, 8, 8);
       setAddress(short_address);
       setFullAddress(temp_addr);
@@ -30,10 +31,6 @@ const AccountDetails = () => {
       }).catch((err) => {
         console.warn("Error in getting balance");
       });
-
-    }).catch((err) => {
-      console.warn("Error in getting address", err);
-    });
   }, []);
 
   const handleOnPress = async () => {
@@ -55,7 +52,7 @@ const AccountDetails = () => {
           end={{ x: 1, y: 0 }}
           locations={[0.2, 1]}
           style={styles.accountdetails}>
-          <Text style={styles.textcolor1}>Muhammad Zaib</Text>
+          <Text style={styles.textcolor1}>{context.fullname}</Text>
           <View style={styles.flex}>
             <Text style={styles.textcolor2}>{address}</Text>
             <Svg

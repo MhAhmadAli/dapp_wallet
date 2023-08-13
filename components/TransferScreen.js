@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { AppStateContext } from './AppStateContext';
 import isValidEthereumAddress from './isValidAddress';
 import shortenString from './shortenString';
 
@@ -18,14 +19,11 @@ export const TransferScreen = props => {
   const navigation = useNavigation();
   const [address, setAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
+  const [context, setContext] = useContext(AppStateContext);
 
   useEffect(() => {
-    axios.get("https://dapp-eallet-deploy1.vercel.app/api/getAddress").then((res) => {
-      const short_address = shortenString(res.data.address);
-      setAddress(short_address);
-    }).catch((err) => {
-      console.log(err);
-    });
+    const short_address = shortenString(context.address, 10);
+    setAddress(short_address);
   }, []);
 
   const handleToAddressChange = (text) => {
@@ -46,6 +44,7 @@ export const TransferScreen = props => {
     else {
       try {
         const response = await axios.post("https://dapp-eallet-deploy1.vercel.app/api/sendTransaction", {
+          from: context.address,
           to: toAddress,
           value: Amount,
         });

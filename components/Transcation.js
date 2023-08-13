@@ -4,12 +4,14 @@ import {Text} from 'react-native-paper';
 import axios from 'axios';
 import shortenString from './shortenString';
 import moment from 'moment';
+import { AppStateContext } from './AppStateContext';
 
 const Transcation = () => {
   const [history, setHistory] = React.useState([])
+  const [context, setContext] = React.useContext(AppStateContext);
+
   React.useEffect(() => {
-    axios.get("https://dapp-eallet-deploy1.vercel.app/api/getAddress").then((res) => {
-      const temp_address = res.data.address;
+      const temp_address = context.address;
 
       axios.post("https://dapp-eallet-deploy1.vercel.app/api/getTransactions", {
         address: temp_address,
@@ -36,9 +38,6 @@ const Transcation = () => {
         }
         setHistory(temp_history);
       }).catch((err) => {});
-    }).catch((err) => {
-      console.log(err);
-    });
   }, [])
   function getMessage() {
     return 'Transcations';

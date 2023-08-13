@@ -1,45 +1,77 @@
-import React, {useState} from 'react';
-import Modal from 'react-native-modal';
-import {View} from 'react-native';
+import axios from 'axios';
+import React, { useState } from 'react';
 
 import {
-  View,
-  TouchableOpacity,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 export const LoginField = () => {
-  const [firstname, setfirstname] = useState('');
-  const [secondname, setsecondname] = useState('');
+  const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
-  const [confirmemail, setConfirmEmail] = useState('');
-  const [password, setpassword] = useState('');
-  const [confirmpassword, setconfirmpassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loadingIndicator, setLoadingIndicator] = useState(false);
+
+
+  const handleRegister = async () => {
+    setLoadingIndicator(true);
+
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.");
+      return;
+    }
+
+    const data = {
+      fullname: fullname,
+      email: email,
+      password: password,
+    };
+
+    try {
+      await axios.post("https://dapp-eallet-deploy1.vercel.app/api/createUser", data).then(async (res) => {
+        const temp_data = res.data;
+
+        if (temp_data && temp_data.user) {
+          alert('User registered successfully');
+        }
+      });
+    } catch (err) {
+      alert(err.response.data.error || 'Something went wrong');
+    }
+
+    setLoadingIndicator(false);
+
+  };
 
   return (
     <View>
-      {/* names field */}
-      <View style={{flexDirection: 'row'}}>
-        <TextInput
-          placeholder="Enter Your First Name"
-          style={styles.usernamefield}
-          onChangeText={text => setfirstname(text)}
-          value={firstname}
-        />
-
-        <TextInput
-          placeholder="Enter Your Second Name"
-          style={styles.usernamefield}
-          onChangeText={text => setsecondname(text)}
-          value={secondname}
-        />
-      </View>
+      {/* fullname */}
+      <TextInput
+        placeholder="Enter Your Full Name"
+        placeholderTextColor={'gray'}
+        style={styles.usernamefield}
+        onChangeText={text => setFullname(text)}
+        value={fullname}
+      />
 
       {/* email */}
       <TextInput
-        placeholder="Enter Your Second Name"
+        placeholder="Enter Your Email"
+        placeholderTextColor={'gray'}
+        style={styles.usernamefield}
+        onChangeText={text => setEmail(text)}
+        value={email}
+      />
+
+      {/* password */}
+      <TextInput
+        placeholder="Password"
+        placeholderTextColor={'gray'}
         style={styles.passwordfield}
         secureTextEntry={true}
         onChangeText={text => setPassword(text)}
@@ -47,69 +79,33 @@ export const LoginField = () => {
       />
 
       <TextInput
-        placeholder="Enter Your Second Name"
+        placeholder="Confirm Password"
+        placeholderTextColor={'gray'}
         style={styles.passwordfield}
         secureTextEntry={true}
-        onChangeText={text => setPassword(text)}
-        value={password}
+        onChangeText={text => setConfirmPassword(text)}
+        value={confirmPassword}
       />
 
-      {/* password */}
-      <View style={{flexDirection: 'row'}}>
-        <TextInput
-          placeholder="Enter Your Password"
-          style={styles.usernamefield}
-          onChangeText={text => setpassword(text)}
-          value={password}
-        />
-
-        <TextInput
-          placeholder="Confirm Password"
-          style={styles.usernamefield}
-          onChangeText={text => setconfirmpassword(text)}
-          value={confirmpassword}
-        />
-      </View>
-
-      <View style={styles.Twobuttons}>
-        <TouchableOpacity onPress={handleLogin} style={styles.loginbutton}>
-          <Text style={{color: 'white', fontSize: 16}}>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={forgettenpage}
-          style={styles.forgettenbutton}>
-          <Text style={{color: 'white', fontSize: 16}}>Forgetten</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.Registerbutton}>
-        <Text style={{color: 'white', fontSize: 19, textAlign: 'center'}}>
-          Register Now
-        </Text>
+      <TouchableOpacity
+        style={styles.Registerbutton}
+        onPress={handleRegister}>
+        {loadingIndicator ?
+          <ActivityIndicator size="small" animating={loadingIndicator} /> :
+          <Text style={{ color: 'white', fontSize: 19, textAlign: 'center' }}>
+            Register Now
+          </Text>
+        }
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  emailtext: {
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'left',
-    marginTop: 10,
-    marginLeft: 25,
-  },
-
-  passwordtext: {
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'left',
-    marginTop: 10,
-    marginLeft: 25,
-  },
 
   usernamefield: {
-    borderColor: 'white',
+    borderColor: 'black',
+    color: 'black',
     borderWidth: 3,
     borderRadius: 50,
     paddingLeft: 25,
@@ -119,36 +115,12 @@ const styles = StyleSheet.create({
 
   passwordfield: {
     borderColor: 'black',
+    color: 'black',
     borderWidth: 3,
     borderRadius: 50,
     paddingLeft: 25,
     fontSize: 17,
     margin: 10,
-  },
-
-  loginbutton: {
-    backgroundColor: '#1F3748',
-    paddingLeft: 60,
-    paddingRight: 60,
-    paddingTop: 17,
-    paddingBottom: 17,
-    margin: 7,
-    borderRadius: 50,
-  },
-
-  forgettenbutton: {
-    backgroundColor: '#1F3748',
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop: 17,
-    paddingBottom: 17,
-    margin: 7,
-    borderRadius: 50,
-  },
-
-  Twobuttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
 
   Registerbutton: {

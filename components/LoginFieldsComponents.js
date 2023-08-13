@@ -1,16 +1,18 @@
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
 
 import {
-  View,
-  TouchableOpacity,
+  Button,
+  Modal,
   StyleSheet,
   Text,
   TextInput,
-  Modal,
-  Button,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { AppStateContext } from './AppStateContext';
 
 const LoginField = props => {
   const navigation = useNavigation();
@@ -19,6 +21,7 @@ const LoginField = props => {
   const [hideninputemail, sethideninputemail] = useState(false);
   const [hideninputpass, sethideninputpassword] = useState(false);
   const [invalidModal, setinvalidModal] = useState(false);
+  const [context, setContext] = useContext(AppStateContext);
 
   const invalidModalCloseModal = () => {
     setinvalidModal(false);
@@ -35,18 +38,35 @@ const LoginField = props => {
     registerMargin = 190;
   }
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email.trim() === '' && password.trim() === '') {
       sethideninputemail(true);
       sethideninputpassword(true);
-    } else if (email === 'example@ex.com' && password === 'pass') {
-      navigation.navigate('DashboardView');
     } else if (email.trim() === '') {
       sethideninputemail(true);
       sethideninputpassword(false);
     } else if (password.trim() === '') {
       sethideninputemail(false);
       sethideninputpassword(true);
+    } else if (email.trim() !== '' && password.trim() !== '') {
+      const data = {
+        email: email,
+        password: password
+      }
+
+      try {
+        await axios.post("https://dapp-eallet-deploy1.vercel.app/api/login", data).then(async (res) => {
+          const temp_data = res.data;
+
+          if (temp_data && temp_data.user) {
+            setContext(temp_data.user);
+            navigation.navigate('DashboardView');
+          }
+        });
+
+      } catch (err) {
+        alert(err.response.data.error || 'Something went wrong');
+      }
     } else {
       setinvalidModal(true);
     }
@@ -56,6 +76,7 @@ const LoginField = props => {
     <View>
       <TextInput
         placeholder="Enter the Email Address"
+        placeholderTextColor={'gray'}
         style={styles.usernamefield}
         onChangeText={text => setEmail(text)}
         value={email}
@@ -69,6 +90,7 @@ const LoginField = props => {
 
       <TextInput
         placeholder="Enter your Password"
+        placeholderTextColor={'gray'}
         style={styles.passwordfield}
         secureTextEntry={true}
         onChangeText={text => setPassword(text)}
@@ -84,12 +106,12 @@ const LoginField = props => {
       <View style={styles.Twobuttons}>
         <LinearGradient
           colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
           locations={[0.2, 1]}
           style={styles.loginbutton}>
           <TouchableOpacity onPress={handleLogin}>
-            <Text style={{color: 'white', fontSize: 17, fontWeight: 'bold'}}>
+            <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>
               Login
             </Text>
           </TouchableOpacity>
@@ -97,13 +119,12 @@ const LoginField = props => {
 
         <LinearGradient
           colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
           locations={[0.2, 1]}
           style={styles.forgettenbutton}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('RegisterScreen')}>
-            <Text style={{color: 'white', fontSize: 17, fontWeight: 'bold'}}>
+          <TouchableOpacity>
+            <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>
               Forgetten
             </Text>
           </TouchableOpacity>
@@ -112,11 +133,12 @@ const LoginField = props => {
 
       <LinearGradient
         colors={['rgba(167,131,255,1)', 'rgba(81,108,250,1)']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
         locations={[0.2, 1]}
-        style={[styles.Registerbutton, {marginTop: registerMargin}]}>
-        <TouchableOpacity>
+        style={[styles.Registerbutton, { marginTop: registerMargin }]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('RegisterScreen')}>
           <Text style={styles.Registertxt}>Register Now</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -125,7 +147,7 @@ const LoginField = props => {
 
       {invalidModal && (
         <Modal
-          style={{borderRadius: 15}}
+          style={{ borderRadius: 15 }}
           animationType="slide"
           transparent
           visible={invalidModal}>
@@ -136,8 +158,8 @@ const LoginField = props => {
               alignItems: 'center',
               borderRadius: 15,
             }}>
-            <View style={{backgroundColor: 'white', padding: 20}}>
-              <Text style={{marginBottom: 15}}>Invalid Account Details??</Text>
+            <View style={{ backgroundColor: 'white', padding: 20 }}>
+              <Text style={{ marginBottom: 15 }}>Invalid Account Details??</Text>
               <Button title="OK" onPress={invalidModalCloseModal} />
             </View>
           </View>
@@ -159,6 +181,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     width: 330,
     alignSelf: 'center',
+    color: 'black',
   },
 
   hiddenusernamefield: {
@@ -185,6 +208,7 @@ const styles = StyleSheet.create({
     width: 330,
     alignSelf: 'center',
     marginBottom: 5,
+    color: 'black',
   },
 
   hiddenpasswordfield: {
@@ -248,7 +272,7 @@ const styles = StyleSheet.create({
     backgroundColor: ['rgba(167,131,255,1)', 'rgba(81,108,250,1)'],
     borderRadius: 30,
     textShadowColor: ['rgba(81,108,250,1)', 'rgba(167,131,255,1)'],
-    textShadowOffset: {width: 3, height: 3},
+    textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 6,
   },
 });

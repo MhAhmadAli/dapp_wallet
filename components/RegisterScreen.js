@@ -1,12 +1,15 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-// import RegisterTxt from 'RegisterTxt.js';
-// import RegistrerInputField from 'RegisterInputField.js';
+import RegisterTxt from './RegisterTxt.js';
+import RegistrerInputField from './RegisterInputField.js';
 
-export const RegisterScreen = () => {
+const RegisterScreen = () => {
   return (
     <View>
-      <Text>kkkk</Text>
+      <RegisterTxt />
+      <RegistrerInputField />
     </View>
   );
 };
+
+export default RegisterScreen;
